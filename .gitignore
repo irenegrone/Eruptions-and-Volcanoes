@@ -5,3 +5,10 @@
 # files
 *.html
 *.txt
+
+*.Rproj
+*.Rhistory
+
+# folders
+cache/*
+figure/*
