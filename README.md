@@ -5,13 +5,10 @@ In development
 
 ### Description
 
-### Objectives
-
-* 1 - EDA: quality of data, outliers detection, data cleaning
+* 1 - EDA
 * 2 - Feature engineering
 * 3 - Develop targets, metrics for viz
-* 4 - flexdashboard
-* 5 - conclusion
+* 4 - flexdashboard + shiny
 
 
 ### Data
