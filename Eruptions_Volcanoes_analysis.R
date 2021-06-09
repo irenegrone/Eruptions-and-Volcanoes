@@ -12,16 +12,11 @@ library(lubridate)
 
 
 # Load data ####
+Eruption_FILE_PATH = paste0(getwd() ,"/data/GVP_Eruption_Results.xlsx")
+Holocene_FILE_PATH = paste0(getwd() ,"/data/GVP_Volcano_List_Holocene.xlsx")
+Pleistocene_FILE_PATH = paste0(getwd() ,"/data/GVP_Volcano_List_Pleistocene.xlsx")
 
-# change working directory as appropriate
-# setwd('C:/Users/irene/Documents/GitHub/Eruptions-and-Volcanoes')
+eruption_data <- read_xlsx(Eruption_FILE_PATH, sheet = "Eruption List", skip = 1)
 
-Eruption_FILE_PATH = paste0(getwd() ,"/data/GVP_Eruption_Result.xlsx")
-
-Holocene_FILE_PATH = "data/GVP_Volcano_List_Holocene.xlsx"
-
-Pleistocene_FILE_PATH = "data/GVP_Volcano_List_Pleistocene.xlsx"
-
-
-eruption_data <- read_xlsx(Eruption_FILE_PATH, sheet = "transport data", skip = 1)
+eruption_events_data <- read_xlsx(Eruption_FILE_PATH, sheet = "Events", skip = 1)
 
