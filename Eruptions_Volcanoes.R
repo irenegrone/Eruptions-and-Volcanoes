@@ -36,3 +36,15 @@ pleistocene_volcanoes <- read_xlsx(Pleistocene_FILE_PATH,
 
 # EDA ####
 
+# check NAs
+
+sapply(eruption_data, function(x) sum(is.na(x)))
+
+sapply(eruption_events_data, function(x) sum(is.na(x)))
+
+sapply(holocene_volcanoes, function(x) sum(is.na(x)))
+
+sapply(pleistocene_volcanoes, function(x) sum(is.na(x)))
+
+
+

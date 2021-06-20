@@ -1,0 +1,14 @@
+---
+title: "Eruptions and Volcanoes EDA"
+output: html_notebook
+autor: Irene Grone
+---
+
+
+```{r}
+
+```
+
+
+
+
