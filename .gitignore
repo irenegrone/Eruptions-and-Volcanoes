@@ -6,9 +6,8 @@
 *.html
 *.txt
 
-*.Rproj
-*.Rhistory
-
 # folders
 cache/*
 figure/*
+logs/
+.ipynb_checkpoints/
