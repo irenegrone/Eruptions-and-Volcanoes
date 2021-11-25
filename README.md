@@ -5,7 +5,8 @@ In development
 Volcanoes and eruptions are a fascinating and very interesting subject and the Smithsonian Institution
 (see Data section below) provide a well maintained and updated database open to the public and researchers.
 
-The aim of this repository is to present an example of analysis and visualisation on open source data.
+The aim of this repository is to present an example of analysis and visualisation on open
+source data using R.
 
 
 ### Description
