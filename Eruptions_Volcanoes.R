@@ -1,4 +1,6 @@
-# title: "Eruptions Volcanoes analysis"
+# -*- coding UTF-8 -*-
+
+# title: "Eruptions  and Volcanoes"
 # author: "Irene Grone"
 # date: "09/06/2021"
 
@@ -45,6 +47,3 @@ sapply(eruption_events_data, function(x) sum(is.na(x)))
 sapply(holocene_volcanoes, function(x) sum(is.na(x)))
 
 sapply(pleistocene_volcanoes, function(x) sum(is.na(x)))
-
-
-

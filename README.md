@@ -2,13 +2,19 @@ In development
 --------------
 
 # Eruptions and Volcanoes
+Volcanoes and eruptions are a fascinating and very interesting subject and the Smithsonian Institution
+(see Data section below) provide a well maintained and updated database open to the public and researchers.
+
+The aim of this repository is to present an example of analysis and visualisation on open source data.
+
 
 ### Description
 
 * 1 - EDA
-* 2 - Feature engineering
-* 3 - Develop targets, metrics for viz
-* 4 - flexdashboard + shiny
+* 2 - data pre-processing
+* 3 - Feature engineering
+* 4 - Develop targets, metrics for viz
+* 5 - flexdashboard + shiny
 
 
 ### Data
