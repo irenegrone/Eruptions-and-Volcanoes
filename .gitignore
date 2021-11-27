@@ -11,3 +11,4 @@ cache/*
 figure/*
 logs/
 .ipynb_checkpoints/
+.Rproj.user
