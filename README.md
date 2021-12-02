@@ -8,7 +8,7 @@ Volcanoes and eruptions are a fascinating and very interesting subject and the S
 
 ### Description
 The aim of this repository is to present an example of data analysis and visualisation in R: using mainly Tidyverse and Flexdashboard packages.
-The code will include:
+The code includes:
 * 1 - Data pre-processing
 * 2 - EDA
 * 3 - Some feature engineering
