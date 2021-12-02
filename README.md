@@ -5,17 +5,14 @@ In development
 Volcanoes and eruptions are a fascinating and very interesting subject and the Smithsonian Institution
 (see Data section below) provide a well maintained and updated database open to the public and researchers.
 
-The aim of this repository is to present an example of analysis and visualisation on open
-source data using R.
-
 
 ### Description
-
-* 1 - EDA
-* 2 - data pre-processing
-* 3 - Feature engineering
-* 4 - Develop targets, metrics for viz
-* 5 - flexdashboard + shiny
+The aim of this repository is to present an example of data analysis and visualisation in R: using mainly Tidyverse and Flexdashboard packages.
+The code will include:
+* 1 - Data pre-processing
+* 2 - EDA
+* 3 - Some feature engineering
+* 4 - Presentation of results with dashboard using Flexdashboard (possibly also shiny)
 
 
 ### Data
