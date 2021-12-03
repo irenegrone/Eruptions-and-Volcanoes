@@ -5,6 +5,7 @@
 # files
 *.html
 *.txt
+Eruptions_Volcanoes_test.R
 
 # folders
 cache/*
