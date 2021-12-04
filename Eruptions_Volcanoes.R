@@ -73,49 +73,73 @@ eruption_data <- eruption_data %>%
   )
 
 
-
-
-
-
-
-
-
-
 # Eruption events ####
-eruption_events_data <- read_xlsx(Eruption_FILE_PATH,
-                                  sheet = "Events",
-                                  skip = 1)[, c("Volcano Number",
-                                                "Volcano Name",
-                                                "Eruption Number",
-                                                "Eruption Start Year",
-                                                "Event Number",
-                                                "Event Type")]
+events_data <- read_xlsx(Eruption_FILE_PATH,
+                         sheet = "Events",
+                         skip = 1)[, c("Volcano Number",
+                                       "Volcano Name",
+                                       "Eruption Number",
+                                       "Eruption Start Year",
+                                       "Event Number",
+                                       "Event Type")]
 
 
-sapply(eruption_events_data, function(x) sum(is.na(x)))
+names(events_data) <- str_to_lower(gsub(" ", "_", names(events_data)))
+summary(events_data)
+sapply(events_data, function(x) sum(is.na(x)))
 
-
+events_data <- events_data %>%
+  mutate(
+    eruption_start_year = as.numeric(eruption_start_year)
+  )
 
 
 # Volcano list Holocene ####
-holocene_volcanoes <- read_xlsx(Holocene_FILE_PATH,
-                                sheet = "Holocene Volcano List",
-                                skip = 1)
+holocene <- read_xlsx(Holocene_FILE_PATH,
+                      sheet = "Holocene Volcano List",
+                      skip = 1)
 
 
-sapply(holocene_volcanoes, function(x) sum(is.na(x)))
+names(holocene) <- str_to_lower(gsub(" ", "_", names(holocene)))
+sapply(holocene, function(x) sum(is.na(x)))
+summary(holocene)
+
+
+holocene <- holocene %>%
+  rename_at("elevation_(m)", ~"elevation") %>%
+  mutate(
+    dominant_rock_type = replace_na(dominant_rock_type, "unknown"),
+    tectonic_setting = replace_na(tectonic_setting, "unknown")
+    # HERE ####
+    # do something with last_known_eruption
+  )
 
 
 # Volcano list Pleistocene ####
-pleistocene_volcanoes <- read_xlsx(Pleistocene_FILE_PATH,
-                                   sheet = "Pleistocene Volcano List",
-                                   skip = 1)
+pleistocene <- read_xlsx(Pleistocene_FILE_PATH,
+                         sheet = "Pleistocene Volcano List",
+                         skip = 1)[ , c("Volcano Number",
+                                        "Volcano Name",
+                                        "Country",
+                                        "Primary Volcano Type",
+                                        "Region",
+                                        "Subregion",
+                                        "Latitude",
+                                        "Longitude",
+                                        "Elevation (m)",
+                                        "Tectonic Setting")]
 
 
-sapply(pleistocene_volcanoes, function(x) sum(is.na(x)))
+names(pleistocene) <- str_to_lower(gsub(" ", "_", names(pleistocene)))
+sapply(pleistocene, function(x) sum(is.na(x)))
+summary(pleistocene)
 
-pleistocene_volcanoes <- pleistocene_volcanoes %>%
-  select(-c('Activity Evidence',
-            'Last Known Eruption',
-            'Dominant Rock Type'))
+pleistocene <- pleistocene %>%
+  rename_at("elevation_(m)", ~"elevation") %>%
+  mutate(
+    tectonic_setting = replace_na(tectonic_setting, "unknown")
+  )
+
+
+# Start Viz ####
 
