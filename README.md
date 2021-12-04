@@ -1,7 +1,4 @@
-In development
---------------
-
-# Eruptions and Volcanoes
+# Eruptions-and-Volcanoes
 Volcanoes and eruptions are a fascinating and very interesting subject and the Smithsonian Institution
 (see Data section below) provide a well maintained and updated database open to the public and researchers.
 
@@ -11,7 +8,7 @@ The aim of this repository is to practice visualisation with Flexdashboard  ans 
 source data using R.
 
 * 1 - Data pre-processing and EDA
-* 2 - Feature engineering, develop metrics for viz
+* 2 - Feature and metrics engineering for viz
 * 3 - Flexdashboard 
 * 4 - Shiny app
 
