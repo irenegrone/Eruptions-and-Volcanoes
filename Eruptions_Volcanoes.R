@@ -8,6 +8,8 @@
 # Import libraries ####
 
 library(dplyr)
+library(tidyr)
+library(purrr)
 library(readxl)
 library(magrittr)
 library(lubridate)
@@ -15,29 +17,71 @@ library(ggplot2)
 library(flexdashboard)
 
 
-# Load data ####
+# Load  and clean data ####
 
-Eruption_FILE_PATH = paste0(getwd() ,"/data/GVP_Eruption_Results.xlsx")
+Eruption_FILE_PATH = "data/GVP_Eruption_Results.xlsx"
+Holocene_FILE_PATH = "data/GVP_Volcano_List_Holocene.xlsx"
+Pleistocene_FILE_PATH = "data/GVP_Volcano_List_Pleistocene.xlsx"
 
-Holocene_FILE_PATH = paste0(getwd() ,"/data/GVP_Volcano_List_Holocene.xlsx")
 
-Pleistocene_FILE_PATH = paste0(getwd() ,"/data/GVP_Volcano_List_Pleistocene.xlsx")
-
-# Eruptions
+# Eruptions ####
 eruption_data <- read_xlsx(Eruption_FILE_PATH,
                            sheet = "Eruption List",
                            skip = 1)[, c("Volcano Number",
                                          "Volcano Name",
                                          "Eruption Number",
-                                         "Area of Activity",
                                          "VEI",
                                          "Start Year",
                                          "Start Month",
-                                         "Start Day",
                                          "Evidence Method (dating)",
                                          "Latitude",
                                          "Longitude")]
 
+names(eruption_data) <- str_to_lower(gsub(" ", "_", names(eruption_data)))
+
+
+summary(eruption_data)
+sapply(eruption_data, function(x) sum(is.na(x)))
+
+
+eruption_data %>%
+  filter(is.na(vei)) %>%
+  select(start_year) %>%
+  table() %>%
+  sort(decreasing = TRUE) %>%
+  head(50)
+
+
+eruption_data %>%
+  filter(is.na(start_month)) %>%
+  select(start_year) %>%
+  table() %>%
+  sort(decreasing = TRUE) %>% head(50)
+
+
+eruption_data <- eruption_data %>%
+  rename_at("evidence_method_(dating)", ~"evidence_method_dating") %>%
+  mutate(
+    vei = as.numeric(vei),
+    start_year = as.numeric(start_year),
+    start_month = as.numeric(start_month),
+    evidence_method_dating = replace_na(evidence_method_dating, "unknown"),
+    # assumption missing Explosivity Index are of rank 0
+    vei = replace_na(vei, 0),
+    # all missing `Start Month` are BC, replace with default 1
+    start_month = replace_na(start_month, 1)
+  )
+
+
+
+
+
+
+
+
+
+
+# Eruption events ####
 eruption_events_data <- read_xlsx(Eruption_FILE_PATH,
                                   sheet = "Events",
                                   skip = 1)[, c("Volcano Number",
@@ -48,28 +92,26 @@ eruption_events_data <- read_xlsx(Eruption_FILE_PATH,
                                                 "Event Type")]
 
 
-# Volcano list Holocene
+sapply(eruption_events_data, function(x) sum(is.na(x)))
+
+
+
+
+# Volcano list Holocene ####
 holocene_volcanoes <- read_xlsx(Holocene_FILE_PATH,
                                 sheet = "Holocene Volcano List",
                                 skip = 1)
 
 
-# Volcano list Pleistocene
+sapply(holocene_volcanoes, function(x) sum(is.na(x)))
+
+
+# Volcano list Pleistocene ####
 pleistocene_volcanoes <- read_xlsx(Pleistocene_FILE_PATH,
                                    sheet = "Pleistocene Volcano List",
                                    skip = 1)
 
 
-# DATA CLEANING ####
-
-sapply(eruption_data, function(x) sum(is.na(x)))
-
-sapply(eruption_events_data, function(x) sum(is.na(x)))
-
-sapply(holocene_volcanoes, function(x) sum(is.na(x)))
-
-
-# Pleistocene
 sapply(pleistocene_volcanoes, function(x) sum(is.na(x)))
 
 pleistocene_volcanoes <- pleistocene_volcanoes %>%
