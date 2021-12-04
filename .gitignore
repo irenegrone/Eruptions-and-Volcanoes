@@ -6,6 +6,7 @@
 *.html
 *.txt
 Eruptions_Volcanoes_test.R
+Eruptions_Volcanoes_test.Rmd
 
 # folders
 cache/*

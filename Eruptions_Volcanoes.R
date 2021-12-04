@@ -15,6 +15,8 @@ library(magrittr)
 library(lubridate)
 library(ggplot2)
 library(flexdashboard)
+library(maps)
+library(ggmap)
 
 
 # Load  and clean data ####
@@ -38,10 +40,6 @@ eruption_data <- read_xlsx(Eruption_FILE_PATH,
                                          "Longitude")]
 
 names(eruption_data) <- str_to_lower(gsub(" ", "_", names(eruption_data)))
-
-
-summary(eruption_data)
-sapply(eruption_data, function(x) sum(is.na(x)))
 
 
 eruption_data %>%
@@ -85,8 +83,7 @@ events_data <- read_xlsx(Eruption_FILE_PATH,
 
 
 names(events_data) <- str_to_lower(gsub(" ", "_", names(events_data)))
-summary(events_data)
-sapply(events_data, function(x) sum(is.na(x)))
+
 
 events_data <- events_data %>%
   mutate(
@@ -101,8 +98,6 @@ holocene <- read_xlsx(Holocene_FILE_PATH,
 
 
 names(holocene) <- str_to_lower(gsub(" ", "_", names(holocene)))
-sapply(holocene, function(x) sum(is.na(x)))
-summary(holocene)
 
 
 holocene <- holocene %>%
@@ -131,8 +126,7 @@ pleistocene <- read_xlsx(Pleistocene_FILE_PATH,
 
 
 names(pleistocene) <- str_to_lower(gsub(" ", "_", names(pleistocene)))
-sapply(pleistocene, function(x) sum(is.na(x)))
-summary(pleistocene)
+
 
 pleistocene <- pleistocene %>%
   rename_at("elevation_(m)", ~"elevation") %>%
