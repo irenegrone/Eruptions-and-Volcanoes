@@ -5,16 +5,15 @@ In development
 Volcanoes and eruptions are a fascinating and very interesting subject and the Smithsonian Institution
 (see Data section below) provide a well maintained and updated database open to the public and researchers.
 
-The aim of this repository is to practice visualisation with Flexdashboard on open
-source data using R, it includes simple EDA and data pre-processing.
-
 
 ### Description
+The aim of this repository is to practice visualisation with Flexdashboard  ans Shiny on open
+source data using R.
 
-* 1 - EDA
-* 2 - data pre-processing
-* 3 - Feature engineering, develop metrics for viz
-* 4 - flexdashboard + shiny
+* 1 - Data pre-processing and EDA
+* 2 - Feature engineering, develop metrics for viz
+* 3 - Flexdashboard 
+* 4 - Shiny app
 
 
 ### Data
