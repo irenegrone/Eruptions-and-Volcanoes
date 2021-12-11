@@ -1,0 +1,193 @@
+---
+title: "Eruptions and Volcanoes"
+author: Irene Grone
+output: 
+  flexdashboard::flex_dashboard:
+    theme: 
+      bg: "darkgrey"
+      fg: "white"
+      primary: "#8AD4C0"
+      secondary: "lightblue"
+      navbar-bg: "#FFB46E"
+    orientation: rows
+    vertical_layout: fill
+    navbar:
+      - { title: "Profile", 
+          href: "http://www.linkedin.com/in/irenegrone", 
+          align: right, icon: fa-linkedin }
+      - { title: "Code", 
+          href: "https://github.com/irenegrone", 
+          align: right, icon: fa-github }
+---
+
+```{r setup, include=FALSE}
+library(flexdashboard)
+```
+
+
+Volcanoes Map {data-icon="fa-globe"}
+=====================================
+
+
+
+
+
+
+Holocene
+=====================================
+
+Value Boxes {data-width=200}
+-------------------------------------
+
+### Holocene
+
+```{r}
+valueBox(1, caption = "Holocene volcanoes")
+```
+
+### Pleistocene
+
+```{r}
+valueBox(2, caption = "Pleistocene volcanoes", color = "info")
+```
+
+### A
+
+```{r}
+valueBox(3, caption = "TYPE")
+```
+
+### B
+
+```{r}
+valueBox(4, caption = "ROCKS")
+```
+
+### C
+
+```{r}
+valueBox(5, caption = "OTHER")
+```
+
+
+Row {data-height=600, .tabset}
+-----------------------------------------------------------------------
+
+### Chart A
+
+```{r}
+
+```
+
+### Chart A.2
+
+### Chart A.3
+
+Row {data-height=400}
+-----------------------------------------------------------------------
+
+### Chart A.4
+
+
+> Caption here with the greater sign
+
+
+### Description
+Some text that explain
+
+
+Pleistocene
+=====================================
+
+Value Boxes {data-width=200}
+-------------------------------------
+
+### Holocene
+
+```{r}
+valueBox(1, caption = "Holocene volcanoes")
+```
+
+### Pleistocene
+
+```{r}
+valueBox(2, caption = "Pleistocene volcanoes", color = "info")
+```
+
+### A
+
+```{r}
+valueBox(3, caption = "TYPE")
+```
+
+### B
+
+```{r}
+valueBox(4, caption = "ROCKS")
+```
+
+### C
+
+```{r}
+valueBox(5, caption = "OTHER")
+```
+
+
+Column {data-width=600}
+-----------------------------------------------------------------------
+
+### Chart B
+
+```{r}
+
+```
+
+### Chart B.2
+
+### Chart B.3
+
+Column {data-width=600}
+-----------------------------------------------------------------------
+
+### Chart B.4
+
+
+
+Eruptions
+=====================================
+
+### Chart C
+
+```{r}
+
+```
+
+
+
+
+
+About {data-icon="fa-info-circle"}
+=====================================
+
+Row
+-------------------------------------
+Description
+
+
+
+Row
+-------------------------------------
+   
+### About {.bg-primary}
+
+This 'card' has a `.bg-primary` class.
+
+Row
+-------------------------------------
+
+### Info {.bg-secondary}
+
+This 'card' has a `.bg-secondary` class 
+
+
+
