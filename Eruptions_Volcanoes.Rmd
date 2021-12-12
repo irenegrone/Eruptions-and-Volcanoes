@@ -21,7 +21,23 @@ output:
 ---
 
 ```{r setup, include=FALSE}
+library(dplyr)
+library(tidyr)
+library(stringr)
+library(purrr)
+library(readxl)
+library(magrittr)
+library(lubridate)
+library(ggplot2)
 library(flexdashboard)
+library(maps)
+library(ggmap)
+
+
+# File paths
+Eruption_FILE_PATH = "data/GVP_Eruption_Results.xlsx"
+Holocene_FILE_PATH = "data/GVP_Volcano_List_Holocene.xlsx"
+Pleistocene_FILE_PATH = "data/GVP_Volcano_List_Pleistocene.xlsx"
 ```
 
 
@@ -33,8 +49,30 @@ Volcanoes Map {data-icon="fa-globe"}
 
 
 
-Holocene
+Holocene 
 =====================================
+
+```{r}
+holocene <- read_xlsx(Holocene_FILE_PATH,
+                                sheet = "Holocene Volcano List",
+                                skip = 1)
+
+names(holocene) <- str_to_lower(gsub(" ", "_", names(holocene)))
+
+holocene <- holocene %>%
+  rename_at("elevation_(m)", ~"elevation") %>%
+  select(!c(last_known_eruption, activity_evidence)) %>%
+  mutate(
+    dominant_rock_type = replace_na(dominant_rock_type, "Unknown"),
+    tectonic_setting = replace_na(tectonic_setting, "Unknown"),
+    primary_volcano_type = gsub("\\(es\\)", "", primary_volcano_type),
+    primary_volcano_type = gsub("\\(s\\)", "", primary_volcano_type),
+    primary_volcano_type = gsub("\\?", "", primary_volcano_type),
+    primary_volcano_type = str_trim(primary_volcano_type),
+  )
+
+```
+
 
 Value Boxes {data-width=200}
 -------------------------------------
@@ -42,94 +80,123 @@ Value Boxes {data-width=200}
 ### Holocene
 
 ```{r}
-valueBox(1, caption = "Holocene volcanoes")
+cnt_holo <- length(unique(holocene$volcano_number))
+
+valueBox(cnt_holo, caption = "HOLOCENE VOLCANOES")
 ```
 
-### Pleistocene
+### primary_volcano_type
 
 ```{r}
-valueBox(2, caption = "Pleistocene volcanoes", color = "info")
+cnt_type <- length(unique(holocene$primary_volcano_type))
+
+valueBox(cnt_type, caption = "PRIMARY VOLCANO TYPE", color = "#AD80C4")
 ```
 
-### A
+
+### country
 
 ```{r}
-valueBox(3, caption = "TYPE")
-```
+cnt_country <- length(unique(holocene$country))
 
-### B
-
-```{r}
-valueBox(4, caption = "ROCKS")
-```
-
-### C
-
-```{r}
-valueBox(5, caption = "OTHER")
+valueBox(cnt_country, caption = "COUNTRIES", color = "#79BEE0")
 ```
 
 
-Row {data-height=600, .tabset}
+Row {data-height=600, data-width=700}
 -----------------------------------------------------------------------
 
-### Chart A
-
-```{r}
-
-```
-
-### Chart A.2
-
-### Chart A.3
-
-Row {data-height=400}
------------------------------------------------------------------------
-
-### Chart A.4
+### ELEVATION
 
 
 > Caption here with the greater sign
 
 
+
+### DOMINANT ROCK TYPE
+```{r}
+# holo_rock <- (holocene$dominant_rock_type))
+
+
+# color = "#79BEE0")
+```
+> Caption
+
+
+Row {data-height=400}
+-----------------------------------------------------------------------
+
+
+### Chart A.2
+
+### Chart A.3
+
 ### Description
 Some text that explain
+
+
+
 
 
 Pleistocene
 =====================================
 
+```{r}
+pleistocene <- read_xlsx(Pleistocene_FILE_PATH,
+                         sheet = "Pleistocene Volcano List",
+                         skip = 1)[ , c("Volcano Number",
+                                        "Volcano Name",
+                                        "Country",
+                                        "Primary Volcano Type",
+                                        "Region",
+                                        "Subregion",
+                                        "Latitude",
+                                        "Longitude",
+                                        "Elevation (m)",
+                                        "Tectonic Setting")]
+
+
+names(pleistocene) <- str_to_lower(gsub(" ", "_", names(pleistocene)))
+
+
+pleistocene <- pleistocene %>%
+  rename_at("elevation_(m)", ~"elevation") %>%
+  mutate(
+    tectonic_setting = replace_na(tectonic_setting, "Unknown"),
+    primary_volcano_type = gsub("\\(es\\)", "", primary_volcano_type),
+    primary_volcano_type = gsub("\\(s\\)", "", primary_volcano_type),
+    primary_volcano_type = gsub("\\(\\?\\)", "", primary_volcano_type),
+    primary_volcano_type = gsub("\\?", "", primary_volcano_type),
+    primary_volcano_type = str_trim(primary_volcano_type),
+  )
+```
+
+
 Value Boxes {data-width=200}
 -------------------------------------
 
-### Holocene
-
-```{r}
-valueBox(1, caption = "Holocene volcanoes")
-```
-
 ### Pleistocene
-
 ```{r}
-valueBox(2, caption = "Pleistocene volcanoes", color = "info")
+cnt_plei <- length(unique(pleistocene$volcano_number))
+
+valueBox(cnt_plei, caption = "PLEISTOCENE VOLCANOES")
 ```
 
-### A
+### primary_volcano_type
 
 ```{r}
-valueBox(3, caption = "TYPE")
+cnt_plei_type <- length(unique(pleistocene$primary_volcano_type))
+
+valueBox(cnt_plei_type, caption = "PRIMARY VOLCANO TYPE", color = "#AD80C4")
 ```
 
-### B
+
+### country
 
 ```{r}
-valueBox(4, caption = "ROCKS")
-```
+cnt_plei_country <- length(unique(pleistocene$country))
 
-### C
-
-```{r}
-valueBox(5, caption = "OTHER")
+valueBox(cnt_plei_country, caption = "COUNTRIES", color = "#79BEE0")
 ```
 
 
@@ -166,7 +233,7 @@ Eruptions
 
 
 
-About {data-icon="fa-info-circle"}
+{data-icon="fa-info-circle"}
 =====================================
 
 Row
