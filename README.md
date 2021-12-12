@@ -10,7 +10,6 @@ source data using R.
 * 1 - Data pre-processing and EDA
 * 2 - Feature and metrics engineering for viz
 * 3 - Flexdashboard 
-* 4 - Shiny app
 
 
 ### Data
