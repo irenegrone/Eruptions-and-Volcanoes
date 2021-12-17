@@ -5,10 +5,11 @@ output:
   flexdashboard::flex_dashboard:
     theme: 
       bg: "darkgrey"
-      fg: "white"
+      fg: "black"
       primary: "#8AD4C0"
       secondary: "lightblue"
       navbar-bg: "#FFB46E"
+    css: styles.css
     orientation: rows
     vertical_layout: fill
     navbar:
@@ -19,6 +20,7 @@ output:
           href: "https://github.com/irenegrone", 
           align: right, icon: fa-github }
 ---
+
 
 ```{r setup, include=FALSE}
 library(dplyr)
@@ -236,25 +238,36 @@ Eruptions
 {data-icon="fa-info-circle"}
 =====================================
 
-Row
--------------------------------------
-Description
 
-
-
-Row
--------------------------------------
-   
-### About {.bg-primary}
-
-This 'card' has a `.bg-primary` class.
-
-Row
+Row {data-height=400}
 -------------------------------------
 
-### Info {.bg-secondary}
+### <b><font size=16>About</font></b>
 
-This 'card' has a `.bg-secondary` class 
+Volcanoes and eruptions are a fascinating and very interesting subject and the Smithsonian Institution (see Data section below) provide a well maintained and updated database open to the public and researchers.
+
+This dashboard has been created as part of a data science / analytics portfolio (see github repository for code link on nav-bar). The aim of the repository is to practice visualisation with Flexdashboard on open source data.
 
 
+Row 
+-------------------------------------
 
+### <b><font size=16>Data</font></b>
+
+The data from Smithsonian Institution are available for use with the [CC0 1.0 Universal licence](https://creativecommons.org/publicdomain/zero/1.0/)
+and follow the Smithsonian term of use available at https://www.si.edu/termsofuse
+
+
+GVP_Volcano_List_Holocene.xlsx<br>
+<cite>Global Volcanism Program, 2013. Volcanoes of the World, v. 4.9.4. Venzke, E (ed.). Smithsonian Institution. Downloaded 10 May 2021. https://doi.org/10.5479/si.GVP.VOTW4-2013 <br>
+downloaded at https://volcano.si.edu/list_volcano_holocene.cfm </cite>
+
+
+GVP_Volcano_List_Pleistocene<br>
+<cite>Global Volcanism Program, 2013. Volcanoes of the World, v. 4.9.4. Venzke, E (ed.). Smithsonian Institution. Downloaded 10 May 2021. https://doi.org/10.5479/si.GVP.VOTW4-2013 <br>
+downloaded at  https://volcano.si.edu/list_volcano_pleistocene.cfm </cite>
+
+
+GVP_Eruption_Results.xlsx<br>
+<cite>Global Volcanism Program, 2013. Volcanoes of the World, v. 4.9.4. Venzke, E (ed.). Smithsonian Institution. Downloaded 10 May 2021. https://doi.org/10.5479/si.GVP.VOTW4-2013 <br>
+downloaded at https://volcano.si.edu/database/search_eruption_results.cfm </cite>
