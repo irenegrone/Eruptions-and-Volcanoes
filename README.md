@@ -28,3 +28,8 @@ downloaded at  https://volcano.si.edu/list_volcano_pleistocene.cfm
 GVP_Eruption_Results.xlsx
 >Citation: Global Volcanism Program, 2013. Volcanoes of the World, v. 4.9.4. Venzke, E (ed.). Smithsonian Institution. Downloaded 10 May 2021. https://doi.org/10.5479/si.GVP.VOTW4-2013 <br>
 downloaded at https://volcano.si.edu/database/search_eruption_results.cfm
+
+
+### Resources
+- Leaflet documentation: "Leaflet for R", available online at https://rstudio.github.io/leaflet/
+- Icons from "Font Awesome",  available online at https://fontawesome.com/, gallery of free icons at https://fontawesome.com/v5.15/icons?d=gallery&p=2&m=free
