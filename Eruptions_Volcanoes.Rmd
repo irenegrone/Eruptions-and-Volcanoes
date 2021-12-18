@@ -9,7 +9,6 @@ output:
       primary: "#8AD4C0"
       secondary: "lightblue"
       navbar-bg: "#FFB46E"
-    css: styles.css
     orientation: rows
     vertical_layout: fill
     navbar:
@@ -246,7 +245,7 @@ Row {data-height=400}
 
 Volcanoes and eruptions are a fascinating and very interesting subject and the Smithsonian Institution (see Data section below) provide a well maintained and updated database open to the public and researchers.
 
-This dashboard has been created as part of a data science / analytics portfolio (see github repository for code link on nav-bar). The aim of the repository is to practice visualisation with Flexdashboard on open source data.
+This dashboard has been created as part of a data science / analytics portfolio (see github repository for code from link on top right of page). The aim of the repository is to practice visualisation with Flexdashboard on open source data.
 
 
 Row 
