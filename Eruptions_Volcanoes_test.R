@@ -16,7 +16,7 @@ library(magrittr)
 library(lubridate)
 library(ggplot2)
 library(flexdashboard)
-library(tmap)
+library(rworldmap)
 library(ggmap)
 
 
@@ -166,14 +166,25 @@ pleistocene <- pleistocene %>%
   )
 
 
+# Elevation ####
+pleistocene %>%
+  mutate(
+    bin_elevation = cut_width(elevation, width = 1000, center = 500)
+  ) %>%
+  select(volcano_name, bin_elevation) %>%
+  ggplot() +
+  geom_bar(aes(bin_elevation)) +
+  theme(axis.text.x = element_text(angle = 60, hjust = 1, vjust = 1),
+        legend.position = "none")
 
 
 
-# Start Viz ####
 
-
-
-
+barplot(height = pleistocene$elevation,
+         # names="none",
+        col = ifelse(pleistocene$elevation > 0, 2, 4),
+        border = NA
+        )
 
 
 
@@ -201,31 +212,73 @@ volcanoes_geo <- holo_coord %>%
   filter(volcano_name != "East Gakkel Ridge at 85°E")
 
 
-volcanoes_geo %>%
-  leaflet() %>%
-  setView(lng = 0, lat = 0, zoom = 0) %>%
-  addCircles(
-    popup = ~paste0(volcanoes_geo$volcano_name, "<br />",
-                    volcanoes_geo$primary_volcano_type, "<br />",
-                    volcanoes_geo$tectonic_setting, "<br />",
-                    volcanoes_geo$elevation, "<br />")
-  )
-
 # test 1 ####
-w_map <- geom_point(aes(x = longitude, y = latitude, colour = era),
-             data = volcanoes_geo,
-             alpha=0.5,
-             size = 1) +
-  theme_bw() +
-  labs("Era",
-       x = "Longitude", y = "Latitude",
-       colour = "era",
-  ) +
-  scale_fill_manual("Volcanoes in the world",
-                    values=c("darkblue","brown")) +
-  theme(legend.position="bottom")
+worldmap <- getMap(resolution = "coarse")
+
+plot(worldmap,
+     col = "lightgray",
+     fill = T,
+     border = "darkgray",
+     xlim = c(-180, 180),
+     ylim = c(-90, 90),
+     bg = "lightblue",
+     asp = 1,
+     wrap=c(-180, 180)
+     )
+
+points(volcanoes_geo$longitude,
+       volcanoes_geo$latitude,
+       col = ifelse(volcanoes_geo$era == "Holocene", "darkorange", "darkgreen"),
+       cex = 0.3
+       )
+
+# test 2 ####
+library(rnaturalearth)
+library(sp)
+
+map <- ne_countries()
+names(map)[names(map) == "iso_a3"] <- "ISO3"
+names(map)[names(map) == "name"] <- "NAME"
 
 
+plot(map,
+     col = "lightgray",
+     fill = T,
+     border = "darkgray",
+     xlim = c(-180, 180),
+     ylim = c(-90, 90),
+     bg = "lightblue",
+     asp = 1,
+     wrap=c(-180, 180)
+)
+
+points(volcanoes_geo$longitude,
+       volcanoes_geo$latitude,
+       col = ifelse(volcanoes_geo$era == "Holocene", "darkorange", "darkgreen"),
+       cex = 0.3)
+
+
+# test 3 ####
+library(leaflet)
+
+leaflet(volcanoes_geo,  padding = 10) %>%
+  addTiles() %>%
+  setView(lng = -0, lat = 0, zoom = 1.5) %>%
+  addCircleMarkers(lng = ~longitude,
+                  lat = ~latitude,
+                  radius = 1,
+                  color = ifelse(volcanoes_geo$era == "Holocene",
+                                 "darkorange", "royalblue"),
+
+                  )
+
+
+
+#  ) %>%
+  leaflet::addLegend(
+    pal = pal, values = ,
+    opacity = 0.7, title = "PM2.5"
+  )
 
 
 
