@@ -148,10 +148,12 @@ pleistocene <- pleistocene %>%
 ```
 
 
+
+
 Volcanoes Map {data-icon="fa-globe"}
 =====================================
 
-### 
+### <b><font size=12>Volcanoes in the World</font></b>
 ```{r}
 holo_coord <- holocene %>%
   select(volcano_name, latitude, longitude,
@@ -183,9 +185,14 @@ leaflet(volcanoes_geo,  padding = 10) %>%
                   lat = ~latitude,
                   radius = 1,
                   color = ifelse(volcanoes_geo$era == "Holocene",
-                                 "darkorange", "royalblue"),
+                                 "darkgreen", "royalblue"),
 
-                  )
+                  ) %>%
+  addLegend("bottomright", 
+            colors = c("darkgreen", "royalblue"),
+            labels = c("Holocene", "Pleistocene"),
+            title = "Era"
+            )
 ```
 
 
@@ -383,10 +390,10 @@ Eruptions
 =====================================
 
 
-Row {data-height=400}
+Row {data-height=200}
 -------------------------------------
 
-### <b><font size=16>About</font></b>
+### <b><font size=12>About</font></b>
 
 Volcanoes and eruptions are a fascinating and very interesting subject and the Smithsonian Institution (see Data section below) provide a well maintained and updated database open to the public and researchers.
 
@@ -396,7 +403,7 @@ This dashboard has been created as part of a data science / analytics portfolio 
 Row 
 -------------------------------------
 
-### <b><font size=16>Data</font></b>
+### <b><font size=12>Data</font></b>
 
 The data from Smithsonian Institution are available for use with the [CC0 1.0 Universal licence](https://creativecommons.org/publicdomain/zero/1.0/)
 and follow the Smithsonian term of use available at https://www.si.edu/termsofuse

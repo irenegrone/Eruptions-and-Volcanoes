@@ -261,25 +261,23 @@ points(volcanoes_geo$longitude,
 # test 3 ####
 library(leaflet)
 
+era_color <- c("darkgreen", "royalblue")
+
 leaflet(volcanoes_geo,  padding = 10) %>%
   addTiles() %>%
   setView(lng = -0, lat = 0, zoom = 1.5) %>%
   addCircleMarkers(lng = ~longitude,
-                  lat = ~latitude,
-                  radius = 1,
-                  color = ifelse(volcanoes_geo$era == "Holocene",
-                                 "darkorange", "royalblue"),
+                   lat = ~latitude,
+                   radius = 1,
+                   color = ifelse(volcanoes_geo$era == "Holocene",
+                                  "darkgreen", "royalblue"),
 
-                  )
-
-
-
-#  ) %>%
-  leaflet::addLegend(
-    pal = pal, values = ,
-    opacity = 0.7, title = "PM2.5"
-  )
-
+                  ) %>%
+  addLegend("bottomright",
+            colors = c("darkgreen", "royalblue"),
+            labels = c("Holocene", "Pleistocene"),
+            title = "Era"
+            )
 
 
 
