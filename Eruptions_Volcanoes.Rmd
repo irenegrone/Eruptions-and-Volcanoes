@@ -31,8 +31,7 @@ library(magrittr)
 library(lubridate)
 library(ggplot2)
 library(flexdashboard)
-library(rworldmap)
-library(ggmap)
+library(leaflet)
 
 
 # File paths
@@ -156,7 +155,7 @@ Volcanoes Map {data-icon="fa-globe"}
 ### <b><font size=12>Volcanoes in the World</font></b>
 ```{r}
 holo_coord <- holocene %>%
-  select(volcano_name, latitude, longitude,
+  select(volcano_number, volcano_name, latitude, longitude,
          primary_volcano_type, tectonic_setting, elevation) %>%
   mutate(
     era = "Holocene"
@@ -164,17 +163,22 @@ holo_coord <- holocene %>%
 
 
 plei_coord <- pleistocene %>%
-  select(volcano_name, latitude, longitude,
+  select(volcano_number, volcano_name, latitude, longitude,
          primary_volcano_type, tectonic_setting, elevation) %>%
   mutate(
     era = "Pleistocene"
   )
 
 
-volcanoes_geo <- holo_coord %>%
-  union(plei_coord)
+volcanoes_geo <- 
+  holo_coord %>%
+  union(plei_coord) %>%
+  mutate(
+    primary_volcano_type = as.factor(primary_volcano_type),
+    tectonic_setting = as.factor(tectonic_setting),
+    era = as.factor(era)
+  )
 
-library(leaflet)
 
 leaflet(volcanoes_geo,  padding = 10) %>%
   addTiles() %>%
@@ -184,7 +188,6 @@ leaflet(volcanoes_geo,  padding = 10) %>%
                   radius = 1,
                   color = ifelse(volcanoes_geo$era == "Holocene",
                                  "darkgreen", "royalblue"),
-
                   ) %>%
   addLegend("bottomright", 
             colors = c("darkgreen", "royalblue"),
@@ -231,19 +234,34 @@ valueBox(cnt_country, caption = "COUNTRIES", color = "#79BEE0")
 Row {data-height=600, data-width=700}
 -----------------------------------------------------------------------
 
-### ELEVATION
+### PRIMARY VOLCANO TYPE
 
-
-> Caption here with the greater sign
-
+```{r, fig.width = 6, fig.height= 5}
+volcanoes_geo %>%
+  filter(era == "Holocene") %>%
+  group_by(primary_volcano_type) %>%
+  summarise(
+    cnt = n()
+  ) %>%
+  ggplot(aes(x = primary_volcano_type,
+             y = cnt)
+         ) +
+  geom_bar(position="stack", stat="identity", fill = "darkgreen") +
+  geom_text(aes(label=cnt), vjust = -0.2, color = "black", size = 3) +
+  ylim(0, 710) +
+  labs(
+    x = "Volcano type",
+    y = "Count",
+  ) +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 60, hjust = 1, vjust = 1),
+        legend.position = "none")
+```
 
 
 ### DOMINANT ROCK TYPE
 ```{r}
-# holo_rock <- (holocene$dominant_rock_type))
 
-
-# color = "#79BEE0")
 ```
 > Caption
 
@@ -295,13 +313,31 @@ valueBox(cnt_plei_country, caption = "COUNTRIES", color = "#79BEE0")
 ```
 
 
-Row {data-width=600}
+Row {data-width=600, data-width=700}
 -----------------------------------------------------------------------
 
-### Chart B
+### PRIMARY VOLCANO TYPE
 
-```{r}
-
+```{r, fig.width = 6, fig.height= 5}
+volcanoes_geo %>%
+  filter(era == "Pleistocene") %>%
+  group_by(primary_volcano_type) %>%
+  summarise(
+    cnt = n()
+  ) %>%
+  ggplot(aes(x = primary_volcano_type,
+             y = cnt)
+  ) +
+  geom_bar(position="stack", stat="identity", fill = "royalblue") +
+  geom_text(aes(label=cnt), vjust = -0.2, color = "black", size = 3) +
+  ylim(0, 710) +
+  labs(
+    x = "Volcano type",
+    y = "Count",
+  ) +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 60, hjust = 1, vjust = 1),
+        legend.position = "none")
 ```
 
 
@@ -313,7 +349,7 @@ Some text that explain
 
 
 
-Row {data-width=600}
+Row {data-width=400}
 -----------------------------------------------------------------------
 
 ### <b>ELEVATION</b>
