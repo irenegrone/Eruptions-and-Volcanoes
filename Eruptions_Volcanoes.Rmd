@@ -172,9 +172,7 @@ plei_coord <- pleistocene %>%
 
 
 volcanoes_geo <- holo_coord %>%
-  union(plei_coord) %>%
-  filter(volcano_name != "East Gakkel Ridge at 85°E")
-
+  union(plei_coord)
 
 library(leaflet)
 
@@ -199,27 +197,6 @@ leaflet(volcanoes_geo,  padding = 10) %>%
 
 Holocene 
 =====================================
-
-```{r}
-holocene <- read_xlsx(Holocene_FILE_PATH,
-                                sheet = "Holocene Volcano List",
-                                skip = 1)
-
-names(holocene) <- str_to_lower(gsub(" ", "_", names(holocene)))
-
-holocene <- holocene %>%
-  rename_at("elevation_(m)", ~"elevation") %>%
-  select(!c(last_known_eruption, activity_evidence)) %>%
-  mutate(
-    dominant_rock_type = replace_na(dominant_rock_type, "Unknown"),
-    tectonic_setting = replace_na(tectonic_setting, "Unknown"),
-    primary_volcano_type = gsub("\\(es\\)", "", primary_volcano_type),
-    primary_volcano_type = gsub("\\(s\\)", "", primary_volcano_type),
-    primary_volcano_type = gsub("\\?", "", primary_volcano_type),
-    primary_volcano_type = str_trim(primary_volcano_type),
-  )
-
-```
 
 
 Value Boxes {data-width=200}
@@ -288,36 +265,6 @@ Some text that explain
 
 Pleistocene
 =====================================
-
-```{r}
-pleistocene <- read_xlsx(Pleistocene_FILE_PATH,
-                         sheet = "Pleistocene Volcano List",
-                         skip = 1)[ , c("Volcano Number",
-                                        "Volcano Name",
-                                        "Country",
-                                        "Primary Volcano Type",
-                                        "Region",
-                                        "Subregion",
-                                        "Latitude",
-                                        "Longitude",
-                                        "Elevation (m)",
-                                        "Tectonic Setting")]
-
-
-names(pleistocene) <- str_to_lower(gsub(" ", "_", names(pleistocene)))
-
-
-pleistocene <- pleistocene %>%
-  rename_at("elevation_(m)", ~"elevation") %>%
-  mutate(
-    tectonic_setting = replace_na(tectonic_setting, "Unknown"),
-    primary_volcano_type = gsub("\\(es\\)", "", primary_volcano_type),
-    primary_volcano_type = gsub("\\(s\\)", "", primary_volcano_type),
-    primary_volcano_type = gsub("\\(\\?\\)", "", primary_volcano_type),
-    primary_volcano_type = gsub("\\?", "", primary_volcano_type),
-    primary_volcano_type = str_trim(primary_volcano_type),
-  )
-```
 
 
 Value Boxes {data-width=200}
