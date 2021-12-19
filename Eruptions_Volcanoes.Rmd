@@ -259,7 +259,7 @@ volcanoes_geo %>%
 ```
 
 
-### DOMINANT ROCK TYPE
+### TOP 20 COUNTRIES
 ```{r}
 
 ```
@@ -313,7 +313,7 @@ valueBox(cnt_plei_country, caption = "COUNTRIES", color = "#79BEE0")
 ```
 
 
-Row {data-width=600, data-width=700}
+Row {data-height=600, data-width=700}
 -----------------------------------------------------------------------
 
 ### PRIMARY VOLCANO TYPE
@@ -342,8 +342,6 @@ volcanoes_geo %>%
 
 
 
-
-
 ### Description
 Some text that explain
 
@@ -354,6 +352,10 @@ Row {data-width=400}
 
 ### <b>ELEVATION</b>
 
+
+```{r}
+
+```
 
 
 Eruptions
