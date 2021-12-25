@@ -32,6 +32,7 @@ library(lubridate)
 library(ggplot2)
 library(flexdashboard)
 library(leaflet)
+library(plotly)
 
 
 # File paths
@@ -113,6 +114,12 @@ holocene <- holocene %>%
     primary_volcano_type = gsub("\\(s\\)", "", primary_volcano_type),
     primary_volcano_type = gsub("\\?", "", primary_volcano_type),
     primary_volcano_type = str_trim(primary_volcano_type),
+  )  %>%
+  select(volcano_number, volcano_name, latitude, longitude,
+         region, country, primary_volcano_type, tectonic_setting,
+         elevation, dominant_rock_type) %>%
+  mutate(
+    era = "Holocene",
   )
 
 
@@ -144,19 +151,7 @@ pleistocene <- pleistocene %>%
     primary_volcano_type = gsub("\\?", "", primary_volcano_type),
     primary_volcano_type = str_trim(primary_volcano_type),
     dominant_rock_type = "-"
-  )
-
-
-holo <- holocene %>%
-  select(volcano_number, volcano_name, latitude, longitude,
-         region, country, primary_volcano_type, tectonic_setting,
-         elevation, dominant_rock_type) %>%
-  mutate(
-    era = "Holocene"
-  )
-
-
-plei <- pleistocene %>%
+  ) %>%
   select(volcano_number, volcano_name, latitude, longitude,
          region, country, primary_volcano_type, tectonic_setting,
          elevation, dominant_rock_type) %>%
@@ -165,9 +160,10 @@ plei <- pleistocene %>%
   )
 
 
+
 # unified volcanoes dataset
-volcanoes_geo <- holo %>%
-  union(plei) %>%
+volcanoes_geo <- holocene %>%
+  union(pleistocene) %>%
   mutate(
     primary_volcano_type = as.factor(primary_volcano_type),
     tectonic_setting = as.factor(tectonic_setting),
@@ -259,25 +255,27 @@ Row {data-height=500}
 ### PRIMARY VOLCANO TYPE
 
 ```{r, fig.width = 6, fig.height= 5}
-volcanoes_geo %>%
-  filter(era == "Holocene") %>%
-  group_by(primary_volcano_type) %>%
-  summarise(
-    cnt = n()
-  ) %>%
-  ggplot(aes(x = primary_volcano_type,
-             y = cnt)
-         ) +
-  geom_bar(position="stack", stat="identity", fill = "#66C4AB") +
-  geom_text(aes(label=cnt), vjust = -0.2, color = "black", size = 3) +
-  ylim(0, 710) +
+p <- volcanoes_geo %>%
+  count(era, primary_volcano_type, .drop=FALSE) %>%
+  ggplot(aes(fill = era,
+             x = primary_volcano_type,
+             y = n)
+  ) +
+  geom_bar(position="dodge",
+           stat="identity"
+  ) +
+  scale_fill_manual(values=c("#8AD4C0", "royalblue")) +
+  ylim(0, 740) +
   labs(
     x = "Volcano type",
     y = "Count",
   ) +
   theme_minimal() +
-  theme(axis.text.x = element_text(angle = 60, hjust = 1, vjust = 1),
-        legend.position = "none")
+  theme(axis.text.x = element_text(angle = 60, hjust = 1, vjust = 0.5),
+       legend.position = c(.90, .90),
+        )
+
+ggplotly(p)
 ```
 
 
