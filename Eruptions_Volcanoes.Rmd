@@ -319,10 +319,10 @@ Row {data-height=500}
 
 
 ### Description
-Top left:
-Top right:
-Bottom left:
-Bottom middle:
+Top left: <br>
+Top right: <br>
+Bottom left: <br>
+Bottom middle: <br>
 
 
 
