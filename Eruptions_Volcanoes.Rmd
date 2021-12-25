@@ -143,43 +143,48 @@ pleistocene <- pleistocene %>%
     primary_volcano_type = gsub("\\(\\?\\)", "", primary_volcano_type),
     primary_volcano_type = gsub("\\?", "", primary_volcano_type),
     primary_volcano_type = str_trim(primary_volcano_type),
+    dominant_rock_type = "-"
+  )
+
+
+holo <- holocene %>%
+  select(volcano_number, volcano_name, latitude, longitude,
+         region, country, primary_volcano_type, tectonic_setting,
+         elevation, dominant_rock_type) %>%
+  mutate(
+    era = "Holocene"
+  )
+
+
+plei <- pleistocene %>%
+  select(volcano_number, volcano_name, latitude, longitude,
+         region, country, primary_volcano_type, tectonic_setting,
+         elevation, dominant_rock_type) %>%
+  mutate(
+    era = "Pleistocene",
+  )
+
+
+# unified volcanoes dataset
+volcanoes_geo <- holo %>%
+  union(plei) %>%
+  mutate(
+    primary_volcano_type = as.factor(primary_volcano_type),
+    tectonic_setting = as.factor(tectonic_setting),
+    dominant_rock_type = as.factor(dominant_rock_type),
+    era = as.factor(era)
   )
 ```
 
 
 
 
-Volcanoes Map {data-icon="fa-globe"}
+Map {data-icon="fa-globe"}
 =====================================
 
 ### <b><font size=12>Volcanoes in the World</font></b>
+
 ```{r}
-holo_coord <- holocene %>%
-  select(volcano_number, volcano_name, latitude, longitude,
-         primary_volcano_type, tectonic_setting, elevation) %>%
-  mutate(
-    era = "Holocene"
-  )
-
-
-plei_coord <- pleistocene %>%
-  select(volcano_number, volcano_name, latitude, longitude,
-         primary_volcano_type, tectonic_setting, elevation) %>%
-  mutate(
-    era = "Pleistocene"
-  )
-
-
-volcanoes_geo <- 
-  holo_coord %>%
-  union(plei_coord) %>%
-  mutate(
-    primary_volcano_type = as.factor(primary_volcano_type),
-    tectonic_setting = as.factor(tectonic_setting),
-    era = as.factor(era)
-  )
-
-
 leaflet(volcanoes_geo,  padding = 10) %>%
   addTiles() %>%
   setView(lng = -0, lat = 0, zoom = 1.5) %>%
@@ -187,36 +192,53 @@ leaflet(volcanoes_geo,  padding = 10) %>%
                   lat = ~latitude,
                   radius = 1,
                   color = ifelse(volcanoes_geo$era == "Holocene",
-                                 "darkgreen", "royalblue"),
+                                 "#66C4AB", "royalblue"),
                   ) %>%
   addLegend("bottomright", 
-            colors = c("darkgreen", "royalblue"),
+            colors = c("#66C4AB", "royalblue"),
             labels = c("Holocene", "Pleistocene"),
             title = "Era"
             )
 ```
 
 
-
-Holocene 
+Volcanoes 
 =====================================
 
 
 Value Boxes {data-width=200}
 -------------------------------------
 
+### All Volcanoes
+
+```{r}
+cnt_volc <- length(unique(volcanoes_geo$volcano_number))
+
+valueBox(cnt_volc, caption = "ALL VOLCANOES", color = "#FFAAA6")
+```
+
+
 ### Holocene
 
 ```{r}
 cnt_holo <- length(unique(holocene$volcano_number))
 
-valueBox(cnt_holo, caption = "HOLOCENE VOLCANOES")
+valueBox(cnt_holo, caption = "HOLOCENE VOLCANOES", color = "#8AD4C0")
 ```
+
+
+### Pleistocene
+```{r}
+cnt_plei <- length(unique(pleistocene$volcano_number))
+
+valueBox(cnt_plei, caption = "PLEISTOCENE VOLCANOES", color = "royalblue")
+```
+
 
 ### primary_volcano_type
 
 ```{r}
-cnt_type <- length(unique(holocene$primary_volcano_type))
+cnt_type <- length(unique(volcanoes_geo$primary_volcano_type))
 
 valueBox(cnt_type, caption = "PRIMARY VOLCANO TYPE", color = "#AD80C4")
 ```
@@ -225,13 +247,13 @@ valueBox(cnt_type, caption = "PRIMARY VOLCANO TYPE", color = "#AD80C4")
 ### country
 
 ```{r}
-cnt_country <- length(unique(holocene$country))
+cnt_country <- length(unique(volcanoes_geo$country))
 
 valueBox(cnt_country, caption = "COUNTRIES", color = "#79BEE0")
 ```
 
 
-Row {data-height=600, data-width=700}
+Row {data-height=500}
 -----------------------------------------------------------------------
 
 ### PRIMARY VOLCANO TYPE
@@ -246,7 +268,7 @@ volcanoes_geo %>%
   ggplot(aes(x = primary_volcano_type,
              y = cnt)
          ) +
-  geom_bar(position="stack", stat="identity", fill = "darkgreen") +
+  geom_bar(position="stack", stat="identity", fill = "#66C4AB") +
   geom_text(aes(label=cnt), vjust = -0.2, color = "black", size = 3) +
   ylim(0, 710) +
   labs(
@@ -259,14 +281,13 @@ volcanoes_geo %>%
 ```
 
 
-### TOP 20 COUNTRIES
+### VOLCANOES BY REGION
 ```{r}
 
 ```
-> Caption
 
 
-Row {data-height=400}
+Row {data-height=500}
 -----------------------------------------------------------------------
 
 
@@ -278,84 +299,6 @@ Row {data-height=400}
 Some text that explain
 
 
-
-
-
-Pleistocene
-=====================================
-
-
-Value Boxes {data-width=200}
--------------------------------------
-
-### Pleistocene
-```{r}
-cnt_plei <- length(unique(pleistocene$volcano_number))
-
-valueBox(cnt_plei, caption = "PLEISTOCENE VOLCANOES")
-```
-
-### primary_volcano_type
-
-```{r}
-cnt_plei_type <- length(unique(pleistocene$primary_volcano_type))
-
-valueBox(cnt_plei_type, caption = "PRIMARY VOLCANO TYPE", color = "#AD80C4")
-```
-
-
-### country
-
-```{r}
-cnt_plei_country <- length(unique(pleistocene$country))
-
-valueBox(cnt_plei_country, caption = "COUNTRIES", color = "#79BEE0")
-```
-
-
-Row {data-height=600, data-width=700}
------------------------------------------------------------------------
-
-### PRIMARY VOLCANO TYPE
-
-```{r, fig.width = 6, fig.height= 5}
-volcanoes_geo %>%
-  filter(era == "Pleistocene") %>%
-  group_by(primary_volcano_type) %>%
-  summarise(
-    cnt = n()
-  ) %>%
-  ggplot(aes(x = primary_volcano_type,
-             y = cnt)
-  ) +
-  geom_bar(position="stack", stat="identity", fill = "royalblue") +
-  geom_text(aes(label=cnt), vjust = -0.2, color = "black", size = 3) +
-  ylim(0, 710) +
-  labs(
-    x = "Volcano type",
-    y = "Count",
-  ) +
-  theme_minimal() +
-  theme(axis.text.x = element_text(angle = 60, hjust = 1, vjust = 1),
-        legend.position = "none")
-```
-
-
-
-### Description
-Some text that explain
-
-
-
-Row {data-width=400}
------------------------------------------------------------------------
-
-### <b>ELEVATION</b>
-
-
-```{r}
-
-```
 
 
 Eruptions
