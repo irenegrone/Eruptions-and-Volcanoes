@@ -1,15 +1,10 @@
 # Eruptions-and-Volcanoes
-Volcanoes and eruptions are a fascinating and very interesting subject and the Smithsonian Institution
-(see Data section below) provide a well maintained and updated database open to the public and researchers.
-
 
 ### Description
-The aim of this repository is to practice visualisation with Flexdashboard on open
-source data using R.
+Volcanoes and eruptions are a fascinating and very interesting subject and the Smithsonian Institution
+(see Data section below) provide a well maintained and updated database open to the public and researchers.<br>
 
-* 1 - Data pre-processing and EDA
-* 2 - Feature and metrics engineering for viz
-* 3 - Flexdashboard
+The aim of this repository is to practice visualisation with Flexdashboard on open source data using R.
 
 
 ### Data
