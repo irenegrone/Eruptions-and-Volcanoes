@@ -265,7 +265,7 @@ p <- volcanoes_geo %>%
            stat="identity"
   ) +
   scale_fill_manual(values=c("#8AD4C0", "royalblue")) +
-  ylim(0, 740) +
+ # ylim(0, 740) +
   labs(
     x = "Volcano type",
     y = "Count",
@@ -281,7 +281,29 @@ ggplotly(p)
 
 ### VOLCANOES BY REGION
 ```{r}
+region <- volcanoes_geo %>%
+  count(region, .drop=FALSE) %>%
+  ggplot(aes(fill = "#FFB46E",
+             x = region,
+             y = n)
+  ) +
+  geom_text(aes(label=n),
+            color = "black",
+            size = 3.5
+  ) +
+  geom_bar(position="dodge",
+           stat="identity"
+  ) +
+  scale_fill_manual(values=c("#FFB46E")) +
+  labs(
+    x = "Region",
+    y = "Count",
+  ) +
+  theme_minimal() +
+  theme(legend.position = "none") +
+  coord_flip()
 
+ggplotly(region) %>% layout(hovermode=F)
 ```
 
 
@@ -289,9 +311,12 @@ Row {data-height=500}
 -----------------------------------------------------------------------
 
 
-### Chart A.2
+### ELEVATION DISTRIBUTION
 
-### Chart A.3
+
+
+### TECTONIC SETTING
+
 
 ### Description
 Some text that explain
