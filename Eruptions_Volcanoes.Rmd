@@ -264,7 +264,7 @@ p <- volcanoes_geo %>%
   geom_bar(position="dodge",
            stat="identity"
   ) +
-  scale_fill_manual(values=c("#8AD4C0", "royalblue")) +
+  scale_fill_manual("Era", values=c("#8AD4C0", "royalblue")) +
  # ylim(0, 740) +
   labs(
     x = "Volcano type",
@@ -277,6 +277,8 @@ p <- volcanoes_geo %>%
 
 ggplotly(p)
 ```
+
+>Number of primary volcano type by Era: the most common type is Stratovolcano.
 
 
 ### VOLCANOES BY REGION
@@ -305,6 +307,7 @@ region <- volcanoes_geo %>%
 
 ggplotly(region) %>% layout(hovermode=F)
 ```
+>Total number of volcanoes by region.
 
 
 Row {data-height=500}
@@ -313,16 +316,33 @@ Row {data-height=500}
 
 ### ELEVATION DISTRIBUTION
 
+```{r}
+elev_density <- volcanoes_geo %>%
+  ggplot(aes(elevation,
+             fill = era
+             )
+  ) +
+  geom_density(alpha = 0.3,
+               linetype = "none"
+               ) +
+  scale_fill_manual(values=c("#8AD4C0", "royalblue")) +
+  theme_minimal()
+
+
+ggplotly(elev_density)
+```
+
+
+
+>Distribution of volcano elevations by Era
 
 
 ### TECTONIC SETTING
 
 
-### Description
-Top left: <br>
-Top right: <br>
-Bottom left: <br>
-Bottom middle: <br>
+
+
+>HERE
 
 
 
