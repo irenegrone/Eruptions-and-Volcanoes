@@ -164,10 +164,15 @@ pleistocene <- pleistocene %>%
 # unified volcanoes dataset
 volcanoes_geo <- holocene %>%
   union(pleistocene) %>%
+  separate(tectonic_setting, c("tectonic_zone", "tectonic_crust"), " / ") %>%
+  mutate(
+    tectonic_crust = gsub("crust ", "", tectonic_crust)
+  ) %>%
   mutate(
     primary_volcano_type = as.factor(primary_volcano_type),
-    tectonic_setting = as.factor(tectonic_setting),
     dominant_rock_type = as.factor(dominant_rock_type),
+    tectonic_zone = as.factor(tectonic_zone),
+    tectonic_crust = as.factor(tectonic_crust),
     era = as.factor(era)
   )
 ```
@@ -322,10 +327,8 @@ elev_density <- volcanoes_geo %>%
              fill = era
              )
   ) +
-  geom_density(alpha = 0.3,
-               linetype = "none"
-               ) +
-  scale_fill_manual(values=c("#8AD4C0", "royalblue")) +
+  geom_density(alpha = 0.3) +
+  scale_fill_manual("Era", values=c("#8AD4C0", "royalblue")) +
   theme_minimal()
 
 
@@ -334,15 +337,28 @@ ggplotly(elev_density)
 
 
 
->Distribution of volcano elevations by Era
+>Distribution of volcano elevations by Era.
 
 
-### TECTONIC SETTING
+### TECTONIC SETTING ELEVATION DISTRIBUTION
+```{r}
+tect_col <- c("#701510", "lightgrey", "#17732F", "#94DAFF")
 
+tect_density <- volcanoes_geo %>%
+  filter(tectonic_zone != "Unknown") %>%
+  ggplot(aes(elevation,
+             fill = tectonic_crust,
+             )
+  ) +
+  geom_density(alpha = 0.2) +
+  facet_grid(vars(era), vars(tectonic_zone)) +
+  scale_fill_manual("Crust type", values=tect_col) +
+  theme_minimal()
 
+ggplotly(tect_density)
+```
 
-
->HERE
+>Elevation distribution in tectnonic zone split by cust type in each era.
 
 
 
