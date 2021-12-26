@@ -2,9 +2,10 @@
 *.ipynb_checkpoints
 *.log
 
+
 # files
 *.txt
-Eruptions_Volcanoes_test.R
+
 
 # folders
 cache/*

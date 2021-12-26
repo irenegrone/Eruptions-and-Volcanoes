@@ -33,7 +33,7 @@ library(ggplot2)
 library(flexdashboard)
 library(leaflet)
 library(plotly)
-library(gganimate)
+library(treemapify)
 
 
 # File paths
@@ -217,7 +217,6 @@ p <- volcanoes_geo %>%
            stat="identity"
   ) +
   scale_fill_manual("Era", values=c("#8AD4C0", "royalblue")) +
- # ylim(0, 740) +
   labs(
     x = "Volcano type",
     y = "Count",
@@ -339,7 +338,7 @@ eruption_data <- eruption_data %>%
     start_year = as.numeric(start_year),
     start_month = as.numeric(start_month),
     evidence_method_dating = replace_na(evidence_method_dating, "unknown"),
-    # assumption missing Explosivity Index are of rank 0
+    # assumption missing start month replaced with 1
     start_month = replace_na(start_month, 1)
   ) %>%
   left_join(volcanoes_geo[, c("volcano_number",
@@ -413,7 +412,7 @@ valueBox(cnt_ev_type, caption = "EVENT TYPES", color = "#79BEE0")
 Row {data-height=600}
 -----------------------------------------------------------------------
 
-### VEI DISTRIBUTION BY TECTONIC ZONE
+### Volcanic Explosivity Index (VEI) BY TECTONIC ZONE
 
 ```{r}
 vei_zone <- eruption_data %>%
@@ -423,22 +422,37 @@ vei_zone <- eruption_data %>%
              fill = tectonic_zone,
              )
          ) +
-  geom_density(alpha = 0.5,
+  geom_bar(alpha = 0.5,
                linetype = "none"
                ) +
   facet_grid(cols=vars(tectonic_zone)) +
   scale_fill_manual("Tectonic zone", 
                     values = c("#701510", "#17732F", "#94DAFF")) +
-  theme_minimal()
+  theme_minimal() + 
+  theme(legend.position = "none")
 
 ggplotly(vei_zone) %>% layout(hovermode=F)
 ```
 
 
-### HERE 
+### EVIDENCE METHODS FOR DATING ERUPTIONS
 
 ```{r}
+dating_met <- eruption_data %>%
+  count(evidence_method_dating, .drop=FALSE) %>%
+  ggplot(aes(fill = n,
+             area = n,
+             label = paste0(evidence_method_dating,
+                            "\n",
+                            prettyNum(n)))) +
+  geom_treemap() +
+  geom_treemap_text(colour = "white",
+                    place = "centre",
+                    size = 10,
+                    reflow = T) +
+  theme_minimal()
 
+dating_met
 ```
 
 
