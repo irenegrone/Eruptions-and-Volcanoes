@@ -11,5 +11,6 @@
 cache/*
 figure/*
 logs/
+rsconnect/
 .ipynb_checkpoints/
 .Rproj.user

@@ -6,6 +6,8 @@ Volcanoes and eruptions are a fascinating and very interesting subject and the S
 
 The aim of this repository is to practice visualisation with Flexdashboard on open source data using R.
 
+Dashboard visible on RPub at https://rpubs.com/Irene-Grone/Eruption-and-Volcanoes
+
 
 ### Data
 
