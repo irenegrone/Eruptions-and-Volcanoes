@@ -60,6 +60,9 @@ names(eruption_data) <- str_to_lower(gsub(" ", "_", names(eruption_data)))
 # missing VEI are replaced with rank unknown
 eruption_data <- eruption_data %>%
   rename_at("evidence_method_(dating)", ~"evidence_method_dating") %>%
+  filter(!is.na(start_year)) %>%
+  filter(volcano_name != "Unknown Source") %>%
+  filter(eruption_number != 21100) %>%
   mutate(
     vei = as.numeric(vei),
     start_year = as.numeric(start_year),
@@ -69,9 +72,7 @@ eruption_data <- eruption_data %>%
     vei = replace_na(vei, "unknown"),
     # missing `Start Month` are replaced with default 1
     start_month = replace_na(start_month, 1)
-  ) %>%
-  filter(!is.na(start_year)) %>%
-  filter(volcano_name != "Unknown Source")
+  )
 
 
 # Eruption events ####
@@ -365,6 +366,48 @@ ggplotly(tect_density)
 Eruptions
 =====================================
 
+Value Boxes {data-width=200}
+-------------------------------------
+
+### Recorded Eruptions
+
+```{r}
+cnt_erup <- length(unique(eruption_data$eruption_number))
+
+valueBox(cnt_erup, caption = "RECORDED ERUPTIONS", color = "#FFAAA6")
+```
+
+
+### Volcanoes
+
+```{r}
+cnt_holo_er <- length(unique(eruption_data$volcano_number))
+
+valueBox(cnt_holo_er, caption = "HOLOCENE VOLCANOES", color = "#8AD4C0")
+```
+
+
+### Evidence Method Dating
+
+```{r}
+cnt_ev_meth <- length(unique(eruption_data$evidence_method_dating)) - 1
+
+valueBox(cnt_ev_meth, caption = "EVIDENCE DATING METHODS", color = "#AD80C4")
+```
+
+
+### Event type
+
+```{r}
+cnt_ev_type <- length(unique(events_data$event_type))
+
+valueBox(cnt_ev_type, caption = "EVENT TYPES", color = "#79BEE0")
+```
+
+
+Row {data-height=500}
+-----------------------------------------------------------------------
+
 ### Chart C
 
 ```{r}
@@ -372,6 +415,14 @@ Eruptions
 ```
 
 
+Row {data-height=500}
+-----------------------------------------------------------------------
+
+### Chart C
+
+```{r}
+
+```
 
 
 

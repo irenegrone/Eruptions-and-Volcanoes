@@ -28,3 +28,7 @@ downloaded at https://volcano.si.edu/database/search_eruption_results.cfm
 ### Resources
 - Leaflet documentation: "Leaflet for R", available online at https://rstudio.github.io/leaflet/
 - Icons from "Font Awesome",  available online at https://fontawesome.com/, gallery of free icons at https://fontawesome.com/v5.15/icons?d=gallery&p=2&m=free
+- ggplot2 documentation: "ggplot2" available online at https://ggplot2.tidyverse.org/
+- plotly documentation: "Plotly R Open Source Graphing Library" available online at https://plotly.com/r/
+- R Markdown documentation: "R markdown: The Definitive Guide", chapter "Layout", available online at https://bookdown.org/yihui/rmarkdown/layout.html
+
