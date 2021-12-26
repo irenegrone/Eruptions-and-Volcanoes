@@ -16,7 +16,7 @@ output:
           href: "http://www.linkedin.com/in/irenegrone", 
           align: right, icon: fa-linkedin }
       - { title: "Code", 
-          href: "https://github.com/irenegrone", 
+          href: "https://github.com/irenegrone/Eruptions-and-Volcanoes", 
           align: right, icon: fa-github }
 ---
 
