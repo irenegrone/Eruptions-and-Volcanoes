@@ -31,4 +31,4 @@ downloaded at https://volcano.si.edu/database/search_eruption_results.cfm
 - ggplot2 documentation: "ggplot2" available online at https://ggplot2.tidyverse.org/
 - plotly documentation: "Plotly R Open Source Graphing Library" available online at https://plotly.com/r/
 - R Markdown documentation: "R markdown: The Definitive Guide", chapter "Layout", available online at https://bookdown.org/yihui/rmarkdown/layout.html
-- gganimate documentation: "A Grammar of animatd graphic" available online at https://gganimate.com/
+- treemapify documentation: "treemapify" available online at https://wilkox.org/treemapify/
