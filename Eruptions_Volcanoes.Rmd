@@ -33,67 +33,13 @@ library(ggplot2)
 library(flexdashboard)
 library(leaflet)
 library(plotly)
+library(gganimate)
 
 
 # File paths
 Eruption_FILE_PATH = "data/GVP_Eruption_Results.xlsx"
 Holocene_FILE_PATH = "data/GVP_Volcano_List_Holocene.xlsx"
 Pleistocene_FILE_PATH = "data/GVP_Volcano_List_Pleistocene.xlsx"
-
-# Eruptions ####
-eruption_data <- read_xlsx(Eruption_FILE_PATH,
-                           sheet = "Eruption List",
-                           skip = 1)[, c("Volcano Number",
-                                         "Volcano Name",
-                                         "Eruption Number",
-                                         "VEI",
-                                         "Start Year",
-                                         "Start Month",
-                                         "Evidence Method (dating)",
-                                         "Latitude",
-                                         "Longitude")]
-
-names(eruption_data) <- str_to_lower(gsub(" ", "_", names(eruption_data)))
-
-
-# missing start_month are replaced with month = 1
-# missing VEI are replaced with rank unknown
-eruption_data <- eruption_data %>%
-  rename_at("evidence_method_(dating)", ~"evidence_method_dating") %>%
-  filter(!is.na(start_year)) %>%
-  filter(volcano_name != "Unknown Source") %>%
-  filter(eruption_number != 21100) %>%
-  mutate(
-    vei = as.numeric(vei),
-    start_year = as.numeric(start_year),
-    start_month = as.numeric(start_month),
-    evidence_method_dating = replace_na(evidence_method_dating, "unknown"),
-    # assumption missing Explosivity Index are of rank 0
-    vei = replace_na(vei, "unknown"),
-    # missing `Start Month` are replaced with default 1
-    start_month = replace_na(start_month, 1)
-  )
-
-
-# Eruption events ####
-events_data <- read_xlsx(Eruption_FILE_PATH,
-                                  sheet = "Events",
-                                  skip = 1)[, c("Volcano Number",
-                                                "Volcano Name",
-                                                "Eruption Number",
-                                                "Eruption Start Year",
-                                                "Event Number",
-                                                "Event Type")]
-
-
-names(events_data) <- str_to_lower(gsub(" ", "_", names(events_data)))
-
-
-events_data <- events_data %>%
-  mutate(
-    eruption_start_year = as.numeric(eruption_start_year)
-  ) %>%
-  filter(volcano_name != "Unknown Source")
 
 
 # Holocene ####
@@ -188,7 +134,7 @@ Map {data-icon="fa-globe"}
 
 ```{r}
 leaflet(volcanoes_geo,  padding = 10) %>%
-  addTiles() %>%
+  addProviderTiles("CartoDB.DarkMatter") %>%
   setView(lng = -0, lat = 0, zoom = 1.5) %>%
   addCircleMarkers(lng = ~longitude,
                   lat = ~latitude,
@@ -366,6 +312,64 @@ ggplotly(tect_density)
 Eruptions
 =====================================
 
+```{r}
+# Eruptions ####
+eruption_data <- read_xlsx(Eruption_FILE_PATH,
+                           sheet = "Eruption List",
+                           skip = 1)[, c("Volcano Number",
+                                         "Volcano Name",
+                                         "Eruption Number",
+                                         "VEI",
+                                         "Start Year",
+                                         "Start Month",
+                                         "Evidence Method (dating)",
+                                         "Latitude",
+                                         "Longitude")]
+
+names(eruption_data) <- str_to_lower(gsub(" ", "_", names(eruption_data)))
+
+
+eruption_data <- eruption_data %>%
+  rename_at("evidence_method_(dating)", ~"evidence_method_dating") %>%
+  filter(!is.na(start_year)) %>%
+  filter(volcano_name != "Unknown Source") %>%
+  filter(eruption_number != 21100) %>%
+  mutate(
+    vei = as.numeric(vei),
+    start_year = as.numeric(start_year),
+    start_month = as.numeric(start_month),
+    evidence_method_dating = replace_na(evidence_method_dating, "unknown"),
+    # assumption missing Explosivity Index are of rank 0
+    start_month = replace_na(start_month, 1)
+  ) %>%
+  left_join(volcanoes_geo[, c("volcano_number",
+                              "tectonic_zone")],
+            by="volcano_number",
+            copy = FALSE)
+
+
+# Eruption events ####
+events_data <- read_xlsx(Eruption_FILE_PATH,
+                                  sheet = "Events",
+                                  skip = 1)[, c("Volcano Number",
+                                                "Volcano Name",
+                                                "Eruption Number",
+                                                "Eruption Start Year",
+                                                "Event Number",
+                                                "Event Type")]
+
+
+names(events_data) <- str_to_lower(gsub(" ", "_", names(events_data)))
+
+
+events_data <- events_data %>%
+  mutate(
+    eruption_start_year = as.numeric(eruption_start_year)
+  ) %>%
+  filter(volcano_name != "Unknown Source")
+```
+
+
 Value Boxes {data-width=200}
 -------------------------------------
 
@@ -374,7 +378,7 @@ Value Boxes {data-width=200}
 ```{r}
 cnt_erup <- length(unique(eruption_data$eruption_number))
 
-valueBox(cnt_erup, caption = "RECORDED ERUPTIONS", color = "#FFAAA6")
+valueBox(cnt_erup, caption = "ALL RECORDED ERUPTIONS", color = "#FFAAA6")
 ```
 
 
@@ -406,21 +410,42 @@ valueBox(cnt_ev_type, caption = "EVENT TYPES", color = "#79BEE0")
 
 
 
-Row {data-height=700}
+Row {data-height=600}
 -----------------------------------------------------------------------
 
-### Chart C
+### VEI DISTRIBUTION BY TECTONIC ZONE
+
+```{r}
+vei_zone <- eruption_data %>%
+  filter(tectonic_zone != "Unknown") %>%
+  filter(vei >= 0) %>%
+  ggplot(aes(vei,
+             fill = tectonic_zone,
+             )
+         ) +
+  geom_density(alpha = 0.5,
+               linetype = "none"
+               ) +
+  facet_grid(cols=vars(tectonic_zone)) +
+  scale_fill_manual("Tectonic zone", 
+                    values = c("#701510", "#17732F", "#94DAFF")) +
+  theme_minimal()
+
+ggplotly(vei_zone) %>% layout(hovermode=F)
+```
+
+
+### HERE 
 
 ```{r}
 
 ```
 
 
-
-Row {data-height=300}
+Row {data-height=400}
 -----------------------------------------------------------------------
 
-### NUMBER OF RECORDED ERUPTIONS PER YEAR (0 - 2020)
+### NUMBER OF RECORDED ERUPTIONS PER YEAR (from 9000 BCE to 2020)
 
 ```{r}
 erup_time <- eruption_data %>%
@@ -436,7 +461,7 @@ erup_time <- eruption_data %>%
     x = "Start year",
     y = "Count",
   ) +
-  xlim(0, 2020) +
+  xlim(-9000, 2020) +
   theme_minimal() +
   theme(legend.position = "none")
 
