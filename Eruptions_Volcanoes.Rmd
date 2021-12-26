@@ -405,7 +405,8 @@ valueBox(cnt_ev_type, caption = "EVENT TYPES", color = "#79BEE0")
 ```
 
 
-Row {data-height=500}
+
+Row {data-height=700}
 -----------------------------------------------------------------------
 
 ### Chart C
@@ -415,14 +416,34 @@ Row {data-height=500}
 ```
 
 
-Row {data-height=500}
+
+Row {data-height=300}
 -----------------------------------------------------------------------
 
-### Chart C
+### NUMBER OF RECORDED ERUPTIONS PER YEAR (0 - 2020)
 
 ```{r}
+erup_time <- eruption_data %>%
+  count(start_year, .drop=FALSE) %>%
+  ggplot(aes(
+             x = start_year,
+             y = n)
+  ) +
+  geom_line(colour = "#FFB46E",
+            size=0.3
+  ) +
+  labs(
+    x = "Start year",
+    y = "Count",
+  ) +
+  xlim(0, 2020) +
+  theme_minimal() +
+  theme(legend.position = "none")
 
+
+ggplotly(erup_time) %>% layout(hovermode=F)
 ```
+
 
 
 
