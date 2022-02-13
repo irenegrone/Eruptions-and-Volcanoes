@@ -1,5 +1,4 @@
 # checkpoint
-*.ipynb_checkpoints
 *.log
 
 
@@ -12,5 +11,5 @@ cache/*
 figure/*
 logs/
 rsconnect/
-.ipynb_checkpoints/
+data/
 .Rproj.user
